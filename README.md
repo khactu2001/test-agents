@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Testing
+
+Use `npm` for all commands.
+
+| Command | What it does |
+| --- | --- |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | Generates Next.js route types, then `tsc --noEmit` |
+| `npm test` | Unit/component tests with Vitest + React Testing Library (single run, no watch). Tests live in `__tests__/`. |
+| `npm run test:e2e` | End-to-end tests with Playwright (Chromium only). Specs live in `e2e/`. |
+
+`npm run test:e2e` builds and starts the app on port 3100 via Playwright's `webServer`. Outside CI an already running server on that port is reused. The first time, install the browser with `npx playwright install chromium`.
+
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, test and build in one job, and e2e in a separate job, on every pull request.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
