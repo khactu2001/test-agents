@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Requires Node.js 22 or newer (`better-sqlite3` crashes on older versions). `.nvmrc` pins Node 24, so run `nvm use` first.
+
+Then run the development server:
 
 ```bash
 npm run dev
