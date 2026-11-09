@@ -30,3 +30,34 @@ test("messages stay in the order they were sent", async ({ page }) => {
   expect(texts[0]).toContain("one");
   expect(texts[1]).toContain("two");
 });
+
+test("pressing Enter twice quickly sends the message only once", async ({ page }) => {
+  const text = `double enter ${Date.now()}`;
+  await page.goto("/");
+
+  const input = page.getByLabel("Tin nhắn");
+  await input.fill(text);
+  await input.press("Enter");
+  await input.press("Enter");
+  await expect(page.getByTestId("message").filter({ hasText: text })).toBeVisible();
+  await expect(input).toHaveValue("");
+
+  await page.reload();
+  await expect(page.getByTestId("message").filter({ hasText: text })).toHaveCount(1);
+});
+
+test("a rejected message shows an error and keeps what was typed", async ({ page }) => {
+  await page.goto("/");
+
+  const input = page.getByLabel("Tin nhắn");
+  await input.fill("   ");
+  await page.getByRole("button", { name: "Gửi" }).click();
+
+  await expect(page.getByText("Tin nhắn không được để trống.")).toBeVisible();
+  await expect(input).toHaveValue("   ");
+});
+
+test("the textarea limits input to the maximum message length", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByLabel("Tin nhắn")).toHaveAttribute("maxlength", "10000");
+});
